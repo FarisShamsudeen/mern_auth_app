@@ -3,7 +3,6 @@ import { CloudinaryStorage } from "multer-storage-cloudinary";
 import cloudinary from "./cloudinary.js";
 
 
-console.log("I have came to cloudinaryMulter.js and this is the cloudinary imported - ", cloudinary)
 const storage = new CloudinaryStorage({
   cloudinary,
   params: {
