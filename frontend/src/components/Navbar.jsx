@@ -19,7 +19,6 @@ export default function Navbar() {
   return (
     <nav className="bg-white border-b shadow-sm sticky top-0 z-50">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Top row */}
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link
@@ -30,83 +29,39 @@ export default function Navbar() {
             {user?.role === "admin" ? "MERN AUTH ADMIN" : "MERN AUTH USER"}
           </Link>
 
-          {/* Hamburger (mobile only) */}
-          <button
-            className="md:hidden text-2xl"
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="Toggle menu"
-          >
-            ☰
-          </button>
-        </div>
-
-        {/* Menu */}
-        <div
-          className={`
-            ${menuOpen ? "block" : "hidden"}
-            md:block
-            absolute md:static top-16 left-0 w-full md:w-auto
-            bg-white md:bg-transparent
-            border-t md:border-0
-            shadow-md md:shadow-none
-          `}
-        >
-          <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-6 p-4 md:p-0">
-            {/* Authenticated links */}
+          {/* Desktop Menu */}
+          <div className="hidden md:flex items-center gap-6">
             {user && (
               <>
-                <Link
-                  to="/"
-                  onClick={() => setMenuOpen(false)}
-                  className="font-medium text-gray-700 hover:text-blue-600"
-                >
+                <Link className="font-medium text-gray-700 hover:text-blue-600" to="/">
                   Home
                 </Link>
 
-                <Link
-                  to="/profile"
-                  onClick={() => setMenuOpen(false)}
-                  className="font-medium text-gray-700 hover:text-blue-600"
-                >
+                <Link className="font-medium text-gray-700 hover:text-blue-600" to="/profile">
                   Profile
                 </Link>
 
                 {user.role === "admin" && (
-                  <Link
-                    to="/admin"
-                    onClick={() => setMenuOpen(false)}
-                    className="font-medium text-gray-700 hover:text-blue-600"
-                  >
+                  <Link className="font-medium text-gray-700 hover:text-blue-600" to="/admin">
                     Dashboard
                   </Link>
                 )}
               </>
             )}
 
-            {/* Guest links */}
             {!user && (
               <>
-                <Link
-                  to="/login"
-                  onClick={() => setMenuOpen(false)}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-center"
-                >
+                <Link className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700" to="/login">
                   Login
                 </Link>
-
-                <Link
-                  to="/register"
-                  onClick={() => setMenuOpen(false)}
-                  className="px-4 py-2 border border-gray-400 rounded-lg hover:bg-gray-200 transition text-center"
-                >
+                <Link className="px-4 py-2 border border-gray-400 rounded-lg hover:bg-gray-200" to="/register">
                   Register
                 </Link>
               </>
             )}
 
-            {/* User info & logout */}
             {user && (
-              <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-4">
+              <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2">
                   {user.profileImage && (
                     <img
@@ -122,14 +77,56 @@ export default function Navbar() {
 
                 <button
                   onClick={handleLogout}
-                  className="w-full md:w-auto px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition"
+                  className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
                 >
                   Logout
                 </button>
               </div>
             )}
           </div>
+
+          {/* Hamburger (mobile only) */}
+          <button
+            className="md:hidden text-2xl"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle menu"
+          >
+            ☰
+          </button>
         </div>
+
+        {/* Mobile Menu */}
+        {menuOpen && (
+          <div className="md:hidden border-t bg-white shadow-md">
+            <div className="flex flex-col gap-4 p-4">
+              {user && (
+                <>
+                  <Link to="/" onClick={() => setMenuOpen(false)}>Home</Link>
+                  <Link to="/profile" onClick={() => setMenuOpen(false)}>Profile</Link>
+                  {user.role === "admin" && (
+                    <Link to="/admin" onClick={() => setMenuOpen(false)}>Dashboard</Link>
+                  )}
+                </>
+              )}
+
+              {!user && (
+                <>
+                  <Link to="/login" onClick={() => setMenuOpen(false)}>Login</Link>
+                  <Link to="/register" onClick={() => setMenuOpen(false)}>Register</Link>
+                </>
+              )}
+
+              {user && (
+                <button
+                  onClick={handleLogout}
+                  className="mt-2 px-4 py-2 bg-red-600 text-white rounded-lg"
+                >
+                  Logout
+                </button>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </nav>
   );
