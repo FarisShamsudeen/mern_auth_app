@@ -15,8 +15,10 @@ export const updateProfile = async (req, res) => {
   user.name = req.body.name || user.name;
   user.phone = req.body.phone || user.phone;
 
+  console.log(user)
   if (req.file) {
-    user.profileImage = `/uploads/${req.file.filename}`;
+    console.log(req)
+    user.profileImage = req.file.path; // Cloudinary URL
   }
 
   const updatedUser = await user.save();
