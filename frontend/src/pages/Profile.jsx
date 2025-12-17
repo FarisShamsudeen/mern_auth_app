@@ -12,13 +12,12 @@ export default function Profile() {
   const [image, setImage] = useState(null);
 
 
-  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
   const [preview, setPreview] = useState(null);
   const profileImageSrc = preview
     ? preview // local blob preview
-    : user?.profileImage
-      ? `${BACKEND_URL}${user.profileImage}` // backend image
-      : null;
+    : (!preview)
+    ? user?.profileImage
+    : null;
 
 
   const [form, setForm] = useState({

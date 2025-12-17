@@ -12,8 +12,8 @@ export default function Navbar() {
     navigate("/login");
   }
 
-  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
+  console.log(user.profileImage)
   return (
     <nav className="bg-white shadow-md border-b border-gray-200">
       <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
@@ -67,7 +67,7 @@ export default function Navbar() {
               <div className="flex items-center gap-2">
                 {user.profileImage && (
                   <img
-                    src={`${BACKEND_URL}${user.profileImage}`}
+                    src={user.profileImage}
                     className="w-8 h-8 rounded-full object-cover"
                     alt="avatar"
                   />

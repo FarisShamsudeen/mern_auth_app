@@ -13,7 +13,6 @@ export const updateProfile = createAsyncThunk(
       const res = await axios.put("/user/profile", formData, {
         headers: {
           "Authorization": `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
         },
       });
 
