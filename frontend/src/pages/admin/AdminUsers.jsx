@@ -21,66 +21,92 @@ export default function AdminUsers() {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow border p-6">
-      <div className="flex justify-between mb-4">
-        <h2 className="text-2xl font-bold">Users</h2>
-        <button onClick={() => { setEditUser(null); setOpen(true); }}
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg">Create User</button>
+    <div className="bg-white rounded-xl shadow border p-4 sm:p-6">
+
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+        <h2 className="text-xl sm:text-2xl font-bold">Users</h2>
+        <button
+          onClick={() => { setEditUser(null); setOpen(true); }}
+          className="w-full sm:w-auto bg-blue-600 text-white px-4 py-2 rounded-lg"
+        >
+          Create User
+        </button>
       </div>
 
-      <div className="flex gap-2 mb-4">
-        <input className="border p-2 rounded w-64" placeholder="Search name/email"
-          value={q} onChange={e => setQ(e.target.value)} />
-        <button onClick={searchUsers} className="border px-3 rounded">Search</button>
+      {/* Search */}
+      <div className="flex flex-col sm:flex-row gap-2 mb-4">
+        <input
+          className="border p-2 rounded w-full sm:w-64"
+          placeholder="Search name/email"
+          value={q}
+          onChange={e => setQ(e.target.value)}
+        />
+        <button
+          onClick={searchUsers}
+          className="border px-4 py-2 rounded"
+        >
+          Search
+        </button>
       </div>
 
-      {loading ? "Loading..." : (
-        <table className="w-full border">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="p-2 border">Name</th>
-              <th className="p-2 border">Email</th>
-              <th className="p-2 border">Role</th>
-              <th className="p-2 border">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map(u => (
-              <tr key={u._id}>
-                <td className="p-2 border">{u.name}</td>
-                <td className="p-2 border">{u.email}</td>
-                <td className="p-2 border">{u.role}</td>
-                <td className="p-2 border space-x-2">
-                  <button className="text-blue-600"
-                    onClick={() => { setEditUser(u); setOpen(true); }}>Edit</button>
-                  <button
-                    className="text-red-600"
-                    onClick={() => {
-                      const ok = window.confirm(
-                        `Are you sure you want to delete ${u.name}?`
-                      );
-                      if (!ok) return;
-
-                      dispatch(deleteUser(u._id));
-                    }}
-                  >
-                    Delete
-                  </button>
-                </td>
+      {/* Table */}
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="min-w-[700px] w-full border">
+            <thead className="bg-gray-100">
+              <tr>
+                <th className="p-2 border">Name</th>
+                <th className="p-2 border">Email</th>
+                <th className="p-2 border">Role</th>
+                <th className="p-2 border">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {users.map(u => (
+                <tr key={u._id}>
+                  <td className="p-2 border">{u.name}</td>
+                  <td className="p-2 border">{u.email}</td>
+                  <td className="p-2 border">{u.role}</td>
+                  <td className="p-2 border space-x-3">
+                    <button
+                      className="text-blue-600"
+                      onClick={() => { setEditUser(u); setOpen(true); }}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="text-red-600"
+                      onClick={() => {
+                        const ok = window.confirm(
+                          `Are you sure you want to delete ${u.name}?`
+                        );
+                        if (!ok) return;
+                        dispatch(deleteUser(u._id));
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
+
+      {/* Pagination */}
       {pages > 1 && (
-        <div className="flex justify-center gap-2 mt-6">
+        <div className="flex flex-wrap justify-center gap-2 mt-6">
           {[...Array(pages).keys()].map(x => (
             <button
               key={x}
               onClick={() => setCurrentPage(x + 1)}
               className={`px-4 py-2 rounded border ${page === x + 1
-                ? "bg-blue-600 text-white"
-                : "bg-white"
+                  ? "bg-blue-600 text-white"
+                  : "bg-white"
                 }`}
             >
               {x + 1}
@@ -88,11 +114,19 @@ export default function AdminUsers() {
           ))}
         </div>
       )}
+
       {!loading && users.length === 0 && (
-        <p className="text-gray-500 text-center mt-6">No users found</p>
+        <p className="text-gray-500 text-center mt-6">
+          No users found
+        </p>
       )}
 
-      {open && <UserFormModal onClose={() => setOpen(false)} user={editUser} />}
+      {open && (
+        <UserFormModal
+          onClose={() => setOpen(false)}
+          user={editUser}
+        />
+      )}
     </div>
   );
 }
